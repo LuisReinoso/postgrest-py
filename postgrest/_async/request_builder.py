@@ -142,7 +142,8 @@ class AsyncMaybeSingleRequestBuilder(AsyncSingleRequestBuilder):
 
 
 # ignoring type checking as a workaround for https://github.com/python/mypy/issues/9319
-class AsyncFilterRequestBuilder(BaseFilterRequestBuilder, AsyncQueryRequestBuilder):  # type: ignore
+# type: ignore
+class AsyncFilterRequestBuilder(BaseFilterRequestBuilder, AsyncQueryRequestBuilder):
     def __init__(
         self,
         session: AsyncClient,
@@ -159,7 +160,8 @@ class AsyncFilterRequestBuilder(BaseFilterRequestBuilder, AsyncQueryRequestBuild
 
 
 # ignoring type checking as a workaround for https://github.com/python/mypy/issues/9319
-class AsyncSelectRequestBuilder(BaseSelectRequestBuilder, AsyncQueryRequestBuilder):  # type: ignore
+# type: ignore
+class AsyncSelectRequestBuilder(BaseSelectRequestBuilder, AsyncQueryRequestBuilder):
     def __init__(
         self,
         session: AsyncClient,
@@ -213,8 +215,10 @@ class AsyncSelectRequestBuilder(BaseSelectRequestBuilder, AsyncQueryRequestBuild
             type_part = "ph"
         elif type_ == "web_search":
             type_part = "w"
-        config_part = f"({options.get('config')})" if options.get("config") else ""
-        self.params = self.params.add(column, f"{type_part}fts{config_part}.{query}")
+        config_part = f"({options.get('config')})" if options.get(
+            "config") else ""
+        self.params = self.params.add(
+            column, f"{type_part}fts{config_part}.{query}")
 
         return AsyncQueryRequestBuilder(
             headers=self.headers,
@@ -246,7 +250,7 @@ class AsyncRequestBuilder:
         """
         method, params, headers, json = pre_select(*columns, count=count)
         return AsyncSelectRequestBuilder(
-            self.session, self.path, method, headers, params, json
+            self.session, self.path, method, self.session.headers, params, json
         )
 
     def insert(
@@ -274,7 +278,7 @@ class AsyncRequestBuilder:
             upsert=upsert,
         )
         return AsyncQueryRequestBuilder(
-            self.session, self.path, method, headers, params, json
+            self.session, self.path, method, self.session.headers, params, json
         )
 
     def upsert(
@@ -305,7 +309,7 @@ class AsyncRequestBuilder:
             on_conflict=on_conflict,
         )
         return AsyncQueryRequestBuilder(
-            self.session, self.path, method, headers, params, json
+            self.session, self.path, method, self.session.headers, params, json
         )
 
     def update(
@@ -330,7 +334,7 @@ class AsyncRequestBuilder:
             returning=returning,
         )
         return AsyncFilterRequestBuilder(
-            self.session, self.path, method, headers, params, json
+            self.session, self.path, method, self.session.headers, params, json
         )
 
     def delete(
@@ -352,7 +356,7 @@ class AsyncRequestBuilder:
             returning=returning,
         )
         return AsyncFilterRequestBuilder(
-            self.session, self.path, method, headers, params, json
+            self.session, self.path, method, self.session.headers, params, json
         )
 
     def stub(self):
