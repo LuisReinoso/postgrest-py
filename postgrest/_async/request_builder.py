@@ -239,6 +239,7 @@ class AsyncRequestBuilder:
         self,
         *columns: str,
         count: Optional[CountMethod] = None,
+        useSessionHeaders = False
     ) -> AsyncSelectRequestBuilder:
         """Run a SELECT query.
 
@@ -249,8 +250,12 @@ class AsyncRequestBuilder:
             :class:`AsyncSelectRequestBuilder`
         """
         method, params, headers, json = pre_select(*columns, count=count)
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return AsyncSelectRequestBuilder(
-            self.session, self.path, method, self.session.headers, params, json
+            self.session, self.path, method, headers, params, json
         )
 
     def insert(
@@ -260,6 +265,7 @@ class AsyncRequestBuilder:
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
         upsert: bool = False,
+        useSessionHeaders = False
     ) -> AsyncQueryRequestBuilder:
         """Run an INSERT query.
 
@@ -277,8 +283,12 @@ class AsyncRequestBuilder:
             returning=returning,
             upsert=upsert,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return AsyncQueryRequestBuilder(
-            self.session, self.path, method, self.session.headers, params, json
+            self.session, self.path, method, headers, params, json
         )
 
     def upsert(
@@ -289,6 +299,7 @@ class AsyncRequestBuilder:
         returning: ReturnMethod = ReturnMethod.representation,
         ignore_duplicates: bool = False,
         on_conflict: str = "",
+        useSessionHeaders = False
     ) -> AsyncQueryRequestBuilder:
         """Run an upsert (INSERT ... ON CONFLICT DO UPDATE) query.
 
@@ -308,8 +319,12 @@ class AsyncRequestBuilder:
             ignore_duplicates=ignore_duplicates,
             on_conflict=on_conflict,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return AsyncQueryRequestBuilder(
-            self.session, self.path, method, self.session.headers, params, json
+            self.session, self.path, method, headers, params, json
         )
 
     def update(
@@ -318,6 +333,7 @@ class AsyncRequestBuilder:
         *,
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
+        useSessionHeaders = False
     ) -> AsyncFilterRequestBuilder:
         """Run an UPDATE query.
 
@@ -333,8 +349,12 @@ class AsyncRequestBuilder:
             count=count,
             returning=returning,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return AsyncFilterRequestBuilder(
-            self.session, self.path, method, self.session.headers, params, json
+            self.session, self.path, method, headers, params, json
         )
 
     def delete(
@@ -342,6 +362,7 @@ class AsyncRequestBuilder:
         *,
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
+        useSessionHeaders = False
     ) -> AsyncFilterRequestBuilder:
         """Run a DELETE query.
 
@@ -355,8 +376,12 @@ class AsyncRequestBuilder:
             count=count,
             returning=returning,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return AsyncFilterRequestBuilder(
-            self.session, self.path, method, self.session.headers, params, json
+            self.session, self.path, method, headers, params, json
         )
 
     def stub(self):
