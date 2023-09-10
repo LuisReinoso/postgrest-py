@@ -235,6 +235,7 @@ class SyncRequestBuilder:
         self,
         *columns: str,
         count: Optional[CountMethod] = None,
+        useSessionHeaders = False
     ) -> SyncSelectRequestBuilder:
         """Run a SELECT query.
 
@@ -245,6 +246,10 @@ class SyncRequestBuilder:
             :class:`AsyncSelectRequestBuilder`
         """
         method, params, headers, json = pre_select(*columns, count=count)
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return SyncSelectRequestBuilder(
             self.session, self.path, method, headers, params, json
         )
@@ -256,6 +261,7 @@ class SyncRequestBuilder:
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
         upsert: bool = False,
+        useSessionHeaders = False
     ) -> SyncQueryRequestBuilder:
         """Run an INSERT query.
 
@@ -273,6 +279,10 @@ class SyncRequestBuilder:
             returning=returning,
             upsert=upsert,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return SyncQueryRequestBuilder(
             self.session, self.path, method, headers, params, json
         )
@@ -285,6 +295,7 @@ class SyncRequestBuilder:
         returning: ReturnMethod = ReturnMethod.representation,
         ignore_duplicates: bool = False,
         on_conflict: str = "",
+        useSessionHeaders = False
     ) -> SyncQueryRequestBuilder:
         """Run an upsert (INSERT ... ON CONFLICT DO UPDATE) query.
 
@@ -304,6 +315,10 @@ class SyncRequestBuilder:
             ignore_duplicates=ignore_duplicates,
             on_conflict=on_conflict,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return SyncQueryRequestBuilder(
             self.session, self.path, method, headers, params, json
         )
@@ -314,6 +329,7 @@ class SyncRequestBuilder:
         *,
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
+        useSessionHeaders = False
     ) -> SyncFilterRequestBuilder:
         """Run an UPDATE query.
 
@@ -329,6 +345,10 @@ class SyncRequestBuilder:
             count=count,
             returning=returning,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return SyncFilterRequestBuilder(
             self.session, self.path, method, headers, params, json
         )
@@ -338,6 +358,7 @@ class SyncRequestBuilder:
         *,
         count: Optional[CountMethod] = None,
         returning: ReturnMethod = ReturnMethod.representation,
+        useSessionHeaders = False
     ) -> SyncFilterRequestBuilder:
         """Run a DELETE query.
 
@@ -351,6 +372,10 @@ class SyncRequestBuilder:
             count=count,
             returning=returning,
         )
+
+        if (useSessionHeaders == True):
+            headers = self.session.headers
+
         return SyncFilterRequestBuilder(
             self.session, self.path, method, headers, params, json
         )
